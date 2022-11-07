@@ -4,4 +4,5 @@ import neural_network
 if __name__ == '__main__':
     print(neural_network.read_data())
     neural_network.initialize_parameters()
+    neural_network.forward_propagation()
 
