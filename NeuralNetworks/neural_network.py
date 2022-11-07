@@ -58,8 +58,8 @@ def initialize_parameters():
         for j in range(0, output_layer_size):
             weights2[i][j] = random.uniform(0, 1)
 
-    print("weights1:", weights1)
-    print("weights2:", weights2)
+    print("Weights1:", weights1)
+    print("Weights2:", weights2)
 
 
 def sigmoid(x):
@@ -70,13 +70,23 @@ def sigmoid_derivative(x):
     return x * (1 - x)
 
 
+def calculate_error(network_output):
+    # calculate error
+    error = 0
+    for i in range(0, len(train_data_matrix)):
+        error += (max(network_output[i]) - 1) ** 2
+    error = error / 2
+    print('Error:', error)
+    return error
+
+
 def forward_propagation():
     # forward propagation
     hidden_layer_output = sigmoid(array(train_data_matrix).reshape(len(train_data_matrix), 4).dot(weights1))
     network_output = sigmoid(dot(hidden_layer_output, weights2))
 
     print('Network output:', network_output)
-    return hidden_layer_output
+    return network_output
 
 
 
