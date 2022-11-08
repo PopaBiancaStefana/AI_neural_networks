@@ -12,10 +12,12 @@ max_num_of_ages = 0
 weights1 = []
 weights2 = []
 train_data_matrix = []
+actual_output = []
 
 
 def read_data():
     global train_data_matrix
+    global actual_output
 
     df = pd.read_csv('dataset/iris.data')
     df = df.sample(frac=1)  # shuffle
@@ -28,6 +30,16 @@ def read_data():
     print(test_data.to_string())
 
     train_data_matrix = train_data[["sepal_len", "sepal_width", "petal_len", "petal_width"]].to_numpy()
+    actual_output = train_data["class"].to_numpy()
+
+    for i,output in enumerate(actual_output):
+        if output == 'Iris-setosa':
+            actual_output[i] = 0
+        elif output == 'Iris-versicolor':
+            actual_output[i] = 1
+        else:
+            actual_output[i] = 2
+    print(actual_output)
 
 
 def initialize_parameters():
@@ -74,7 +86,11 @@ def calculate_error(network_output):
     # calculate error
     error = 0
     for i in range(0, len(train_data_matrix)):
-        error += (max(network_output[i]) - 1) ** 2
+        for j, predicted in enumerate(network_output[i]):
+            if j == actual_output[i]:
+                error += (1 - network_output[i][j]) ** 2
+            else:
+                error += (0 - network_output[i][j]) ** 2
     error = error / 2
     print('Error:', error)
     return error
